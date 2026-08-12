@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Run week tests",
+    "type": "io",
+    "run": "make test-week",
+    "expected": "All tests passed",
+    "comparison": "included",
+    "timeout": 10,
+    "points": 10
+  },
+  {
+    "name": "Run stats tests",
+    "type": "io",
+    "run": "make test-stats",
+    "expected": "All tests passed",
+    "comparison": "included",
+    "timeout": 10,
+    "points": 10
+  },
+  {
+    "name": "Run state tests",
+    "type": "io",
+    "run": "make test-state",
+    "expected": "All tests passed",
+    "comparison": "included",
+    "timeout": 10,
+    "points": 10
+  },
+  {
+    "name": "Run morbidity tests",
+    "type": "io",
+    "run": "make test-morbidity",
+    "expected": "All tests passed",
+    "comparison": "included",
+    "timeout": 10,
+    "points": 10
+  },
+  {
+    "name": "Query Hawaii mean",
+    "type": "io",
+    "setup": "make main",
+    "run": "./main",
+    "input": "data.csv\n1\nHawaii\n99",
+    "expected": "218.373",
+    "comparison": "included",
+    "timeout": 1,
+    "points": 10
+  },
+  {
+    "name": "Query Florida for outliers",
+    "type": "io",
+    "setup": "make main",
+    "run": "./main",
+    "input": "data.csv\n2\nFlorida\n99",
+    "expected": "2020-07-18 - total deaths: 5509",
+    "comparison": "included",
+    "timeout": 1,
+    "points": 10
+  },
+  {
+    "name": "Get list of all states and outlying data",
+    "type": "io",
+    "setup": "make main",
+    "run": "./main",
+    "input": "foo.bar\ndata.csv\n3\n99",
+    "expected": "New Mexico: 15",
+    "comparison": "included",
+    "timeout": 1,
+    "points": 10
+  },
+  {
+    "name": "Memory leak check",
+    "type": "run",
+    "setup": "(valgrind --version || (sudo apt-get update -y && sudo apt-get install -y valgrind)) && make test-all",
+    "run": "valgrind --leak-check=full --error-exitcode=1 ./test-state && valgrind --leak-check=full --error-exitcode=1 ./test-morbidity",
+    "exit-code": 0,
+    "timeout": 10,
+    "points": 20
+  }
+]
