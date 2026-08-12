@@ -1,9 +1,12 @@
+SHELL := /bin/bash
 CXX = g++
-CXXFLAGS = -g -std=c++14 -Wall -Werror=return-type  \
-			-Werror=uninitialized -Wno-sign-compare
+CXXFLAGS = -g -std=c++14 -Wall -Werror=return-type -Werror=uninitialized -Wno-sign-compare
+RM = rm -rf
+
 TESTS = test-stats test-week test-state test-morbidity
 CATCH = test/catch/catch.o
-RM = rm -rf
+
+all: main $(TESTS)
 
 main: main.o morbidity.o state.o stats.o week-data.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
@@ -11,15 +14,24 @@ main: main.o morbidity.o state.o stats.o week-data.o
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
+$(CATCH): test/catch/catch.cpp
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
+
 test-all: $(TESTS)
 
 test-week: week-data.o $(CATCH) test/test-week.o
-test-stats: stats.o week-data.o $(CATCH) test/test-stats.o
-test-state: state.o week-data.o stats.o $(CATCH) test/test-state.o
-test-morbidity: morbidity.o state.o week-data.o stats.o $(CATCH) \
-	test/test-morbidity.o
+	$(CXX) $(CXXFLAGS) -o $@ $^
+	./$@ --success
 
-$(TESTS):
+test-stats: stats.o week-data.o $(CATCH) test/test-stats.o
+	$(CXX) $(CXXFLAGS) -o $@ $^
+	./$@ --success
+
+test-state: state.o week-data.o stats.o $(CATCH) test/test-state.o
+	$(CXX) $(CXXFLAGS) -o $@ $^
+	./$@ --success
+
+test-morbidity: morbidity.o state.o week-data.o stats.o $(CATCH) test/test-morbidity.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 	./$@ --success
 
@@ -31,5 +43,6 @@ test-run: main
 	./main < input.txt
 
 clean:
-	$(RM) *.dSYM test/*.dSYM *.o *.gc* $(CATCH) \
-	$(TESTS) test/*.o main
+	$(RM) *.dSYM test/*.dSYM *.o *.gc* $(CATCH) $(TESTS) test/*.o main
+
+.PHONY: all main test-all test-week test-stats test-state test-morbidity test-mem test-run clean
