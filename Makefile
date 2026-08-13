@@ -39,10 +39,19 @@ test-mem: test-state test-morbidity
 	valgrind --leak-check=full --error-exitcode=1 ./test-state --success
 	valgrind --leak-check=full --error-exitcode=1 ./test-morbidity --success
 
-test-run: main
-	./main < input.txt
+test-query1: main
+	echo -e "data.csv\n1\nHawaii\n99" | ./main
+
+test-query2: main
+	echo -e "data.csv\n2\nFlorida\n99" | ./main
+
+test-query3: main
+	echo -e "foo.bar\ndata.csv\n3\n99" | ./main
+
+test-run: main test-query1 test-query2 test-query3
 
 clean:
 	$(RM) *.dSYM test/*.dSYM *.o *.gc* $(CATCH) $(TESTS) test/*.o main
 
-.PHONY: all main test-all test-week test-stats test-state test-morbidity test-mem test-run clean
+.PHONY: all main test-all test-week test-stats test-state test-morbidity test-query1 test-query2 test-query3 test-mem test-run clean
+

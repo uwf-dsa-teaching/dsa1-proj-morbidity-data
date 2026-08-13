@@ -246,6 +246,26 @@ Please choose an option from the above menu: <b>3</b>
 Please choose an option from the above menu: <b>9999</b>
 </code> </pre>
 
+## Building and Testing
+
+A `Makefile` is provided to automate compilation and testing:
+- **Compile main program**: `make main`
+- **Run interactive query tests**:
+  - `make test-query1`: Runs Hawaii mortality mean query test.
+  - `make test-query2`: Runs Florida death outliers query test.
+  - `make test-query3`: Runs all states summary query test.
+  - `make test-run`: Runs all query tests.
+- **Run unit tests**: `make test-all`
+- **Run individual unit tests**:
+  - `make test-week`: WeekData class unit tests.
+  - `make test-stats`: Statistics engine unit tests.
+  - `make test-state`: State class unit tests.
+  - `make test-morbidity`: Morbidity database unit tests.
+- **Run memory leak check**: `make test-mem` (runs Valgrind on test-state and test-morbidity).
+- **Clean build artifacts**: `make clean`
+
+> **Note for macOS / Xcode users**: Valgrind is not natively supported on macOS. If you are using macOS command line tools (Xcode), you cannot directly execute `valgrind` / `make test-mem` locally. Please launch a **GitHub Codespaces** instance on GitHub (or use a Linux container) to run memory leak checks.
+
 ## Important Notes:
 - Projects will be graded on whether they correctly solve the problem, and
   whether they adhere to good programming practices.
